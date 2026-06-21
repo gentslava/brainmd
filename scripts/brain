@@ -1,0 +1,211 @@
+#!/usr/bin/env python3
+"""
+brain — CLI wrapper for brainmd knowledge-brain mechanics.
+
+Commands:
+  brain init <dir>              Copy the canon scaffold into a target vault directory
+  brain gate <manifest>         Gate: check frontmatter, claim, source for pages in manifest
+  brain diagnose [--vault DIR]  Run graph diagnostics (orphans, hubs, communities, Gini)
+  brain lint [--vault DIR]      Run wiki-lint (edge types, frontmatter, up-links, ephemeral)
+  brain untangle <manifest>     Detect dandelion-rule violations for pages in manifest
+
+All commands delegate to the existing scripts in the same directory.
+Pure stdlib — no external dependencies.
+"""
+
+import os
+import sys
+import shutil
+import subprocess
+
+SCRIPTS_DIR = os.path.dirname(os.path.abspath(__file__))
+BRAINMD_DIR = os.path.dirname(SCRIPTS_DIR)
+CANON_DIR = os.path.join(BRAINMD_DIR, "canon")
+
+
+def usage():
+    print(__doc__)
+    sys.exit(0)
+
+
+def find_vault(args):
+    """Return vault path from --vault flag or current directory."""
+    if "--vault" in args:
+        idx = args.index("--vault")
+        if idx + 1 >= len(args):
+            die("--vault requires a path argument")
+        return os.path.abspath(args[idx + 1])
+    return os.getcwd()
+
+
+def die(msg):
+    print(f"brain: error: {msg}", file=sys.stderr)
+    sys.exit(1)
+
+
+def run(*cmd, **kwargs):
+    """Run a subprocess command; inherit stdio."""
+    result = subprocess.run(cmd, **kwargs)
+    return result.returncode
+
+
+# ──────────────────────────────────────────────────────────────────────────────
+# brain init <dir>
+# ──────────────────────────────────────────────────────────────────────────────
+
+def cmd_init(args):
+    if not args:
+        die("brain init requires a target directory.\nUsage: brain init <dir>")
+    target = os.path.abspath(args[0])
+
+    if not os.path.isdir(CANON_DIR):
+        die(f"canon directory not found at {CANON_DIR}. Is brainmd installed correctly?")
+
+    os.makedirs(target, exist_ok=True)
+
+    # Items to copy from canon/ into the target vault
+    items = [
+        "SCHEMA.md",
+        "Graph Rules.md",
+        "Knowledge Graph Queries.md",
+        "AGENTS.md",
+        "templates",
+    ]
+
+    copied = []
+    skipped = []
+    for item in items:
+        src = os.path.join(CANON_DIR, item)
+        dst = os.path.join(target, item)
+        if not os.path.exists(src):
+            print(f"  [skip] {item} — not found in canon/")
+            continue
+        if os.path.exists(dst):
+            print(f"  [skip] {item} — already exists in target (not overwriting)")
+            skipped.append(item)
+            continue
+        if os.path.isdir(src):
+            shutil.copytree(src, dst)
+        else:
+            shutil.copy2(src, dst)
+        print(f"  [ok]   {item}")
+        copied.append(item)
+
+    print()
+    print(f"brain init: {target}")
+    print(f"  Copied:  {len(copied)} items")
+    print(f"  Skipped: {len(skipped)} items (already present)")
+    print()
+    print("Next steps:")
+    print("  1. Review and customize SCHEMA.md for your domain")
+    print("  2. Update AGENTS.md to describe your vault's purpose")
+    print("  3. Run: brain diagnose  (to check graph health)")
+    print("  4. Run: brain lint      (to check frontmatter and edge types)")
+
+
+# ──────────────────────────────────────────────────────────────────────────────
+# brain gate <manifest>
+# ──────────────────────────────────────────────────────────────────────────────
+
+def cmd_gate(args):
+    if not args:
+        die("brain gate requires a manifest file.\nUsage: brain gate <manifest>")
+    manifest = os.path.abspath(args[0])
+    if not os.path.isfile(manifest):
+        die(f"manifest file not found: {manifest}")
+
+    gate_script = os.path.join(SCRIPTS_DIR, "graph_diagnostics.py")
+    if not os.path.isfile(gate_script):
+        die(f"graph_diagnostics.py not found in {SCRIPTS_DIR}")
+
+    # graph_diagnostics.py --gate-v3: validated V3 mode (full typing + up-link +
+    # ephemeral split; NO link cap). This is the proven mode from the A/B experiments.
+    rc = run(sys.executable, gate_script, "--gate-v3", manifest)
+    sys.exit(rc)
+
+
+# ──────────────────────────────────────────────────────────────────────────────
+# brain diagnose
+# ──────────────────────────────────────────────────────────────────────────────
+
+def cmd_diagnose(args):
+    vault = find_vault(args)
+    diag_script = os.path.join(SCRIPTS_DIR, "graph_diagnostics.py")
+    if not os.path.isfile(diag_script):
+        die(f"graph_diagnostics.py not found in {SCRIPTS_DIR}")
+
+    env = os.environ.copy()
+    env["BRAINMD_VAULT"] = vault
+
+    rc = run(sys.executable, diag_script, env=env, cwd=vault)
+    sys.exit(rc)
+
+
+# ──────────────────────────────────────────────────────────────────────────────
+# brain lint
+# ──────────────────────────────────────────────────────────────────────────────
+
+def cmd_lint(args):
+    vault = find_vault(args)
+    lint_script = os.path.join(SCRIPTS_DIR, "wiki-lint.mjs")
+    if not os.path.isfile(lint_script):
+        die(f"wiki-lint.mjs not found in {SCRIPTS_DIR}")
+
+    node = shutil.which("node")
+    if not node:
+        die("node is required for brain lint but was not found on PATH")
+
+    rc = run(node, lint_script, cwd=vault)
+    sys.exit(rc)
+
+
+# ──────────────────────────────────────────────────────────────────────────────
+# brain untangle <manifest>
+# ──────────────────────────────────────────────────────────────────────────────
+
+def cmd_untangle(args):
+    if not args:
+        die("brain untangle requires a manifest file.\nUsage: brain untangle <manifest>")
+    manifest = os.path.abspath(args[0])
+    if not os.path.isfile(manifest):
+        die(f"manifest file not found: {manifest}")
+
+    untangle_script = os.path.join(SCRIPTS_DIR, "untangle.py")
+    if not os.path.isfile(untangle_script):
+        die(f"untangle.py not found in {SCRIPTS_DIR}")
+
+    rc = run(sys.executable, untangle_script, manifest)
+    sys.exit(rc)
+
+
+# ──────────────────────────────────────────────────────────────────────────────
+# Dispatch
+# ──────────────────────────────────────────────────────────────────────────────
+
+COMMANDS = {
+    "init": cmd_init,
+    "gate": cmd_gate,
+    "diagnose": cmd_diagnose,
+    "lint": cmd_lint,
+    "untangle": cmd_untangle,
+}
+
+
+def main():
+    args = sys.argv[1:]
+    if not args or args[0] in ("-h", "--help", "help"):
+        usage()
+
+    cmd = args[0]
+    rest = args[1:]
+
+    if cmd not in COMMANDS:
+        print(f"brain: unknown command '{cmd}'", file=sys.stderr)
+        print(f"Available commands: {', '.join(COMMANDS)}", file=sys.stderr)
+        sys.exit(1)
+
+    COMMANDS[cmd](rest)
+
+
+if __name__ == "__main__":
+    main()

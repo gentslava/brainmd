@@ -1,0 +1,4 @@
+---
+type: product
+---
+# Hub
