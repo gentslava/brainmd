@@ -40,12 +40,11 @@ index.md
       → source summary or evidence page if more detail needed
 ```
 
-Read the `claim:` field of each candidate page before reading the full content. `claim` is the fast filter.
+Scan each candidate page's title and opening section to decide whether the full content is needed.
 
 ### 3. Collect answer components
 
 For each relevant page:
-- Note the `claim`
 - Note the specific fact or number needed
 - Note the `source` and `confidence` from frontmatter
 - Note the `updated` date (is this current?)

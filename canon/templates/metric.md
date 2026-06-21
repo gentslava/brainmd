@@ -4,7 +4,6 @@ status: draft
 owner: <owner>
 updated: YYYY-MM-DD
 confidence: medium
-claim: "<what this metric measures and its current benchmark value>"
 metric_owner: <team or person responsible>
 data_source: <PostgreSQL | ClickHouse | Google Sheets | API | manual>
 source:
@@ -15,8 +14,6 @@ tags:
 ---
 
 # Metric — <Metric Name>
-
-> **Claim:** <restate the claim field>
 
 ## Definition
 

@@ -4,7 +4,6 @@ status: draft
 owner: <owner>
 updated: YYYY-MM-DD
 confidence: medium
-claim: "<key conclusion of this synthesis in one sentence, include a number if applicable>"
 source:
   - <source page or document>
 review_after: YYYY-MM-DD
@@ -13,8 +12,6 @@ tags:
 ---
 
 # <Synthesis Title>
-
-> **Claim:** <restate the claim field here as a full sentence>
 
 ## Context
 

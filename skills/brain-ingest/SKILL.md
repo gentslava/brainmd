@@ -1,11 +1,11 @@
 ---
 name: brain-ingest
-description: Transform a source (document, database query, meeting notes, report) into stable wiki pages with typed edges, claim fields, and full provenance. The core pipeline for growing the brain.
+description: Transform a source (document, database query, meeting notes, report) into stable wiki pages with typed edges and full provenance. The core pipeline for growing the brain.
 ---
 
 # brain-ingest
 
-**Purpose:** Turn a raw source into stable, navigable, provenance-tracked knowledge. Output: one or more wiki pages, a source summary, typed `## Links` edges, and a `claim` per page.
+**Purpose:** Turn a raw source into stable, navigable, provenance-tracked knowledge. Output: one or more wiki pages, a source summary, and typed `## Links` edges.
 
 ---
 
@@ -57,7 +57,6 @@ status: draft | active
 owner: <owner>
 updated: YYYY-MM-DD
 confidence: high | medium | low | unknown
-claim: "<key assertion of this page>"
 source:
   - <source name or path>
 ```
@@ -80,7 +79,6 @@ affects::     [[Influenced Page]]  # influence without strict causation
 depends_on::  [[Dependency Page]]  # requires this to be true/active
 evidence::    [[Source Page]]      # this page is supported by that source
 derived_from:: [[Source Page]]     # numbers/claims derived from this source
-entity::      Named Concept        # key concept without its own page
 ```
 
 Never use flat wikilinks in `## Links`. Navigation prose can use `[[page]]` freely; `## Links` must be typed.
@@ -118,7 +116,7 @@ Add a brief entry to the vault's operation log: source name, pages created/updat
 - [ ] Source registered in Source Registry
 - [ ] Source summary created
 - [ ] Each extracted fact has provenance
-- [ ] Each new/updated wiki page has valid frontmatter including `claim`
+- [ ] Each new/updated wiki page has valid frontmatter (type, status, owner, updated, confidence, source)
 - [ ] Typed edges added in `## Links`
 - [ ] New pages added to relevant MOC
 - [ ] Contradictions logged if any

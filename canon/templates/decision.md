@@ -4,7 +4,6 @@ status: draft
 owner: <owner>
 updated: YYYY-MM-DD
 confidence: high
-claim: "<the decision in one sentence>"
 decision_date: YYYY-MM-DD
 review_after: YYYY-MM-DD
 source:
@@ -14,8 +13,6 @@ tags:
 ---
 
 # Decision — <Decision Title>
-
-> **Claim:** <restate the decision>
 
 ## Context
 

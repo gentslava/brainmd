@@ -32,8 +32,7 @@ A **living knowledge brain**: a typed-markdown graph of accumulated knowledge on
 3. **Never cut knowledge links.** Removing links between stable wiki pages degrades retrieval. If a link is wrong, replace it with the correct one. Never just delete.
 4. **Never silently overwrite contradictions.** If new information contradicts existing knowledge: note both, mark the old as `outdated` or `deprecated`, log the contradiction. The Contradiction Register is the right destination.
 5. **Separate ephemeral from stable.** Inbox, agent reports, and raw sources are ephemeral buffers — not knowledge nodes. They link into the stable graph via `evidence::` edges but do not receive peer links back from stable pages.
-6. **One claim per page.** Every stable wiki page carries a `claim:` in frontmatter — the single key assertion of that page. Agents read `claim` first, fetch full content only if needed.
-7. **Confidence must be honest.** `confidence: high` only when confirmed by a document, database, code, or two independent sources. `low` or `unknown` requires an explicit `to verify` note.
+6. **Confidence must be honest.** `confidence: high` only when confirmed by a document, database, code, or two independent sources. `low` or `unknown` requires an explicit `to verify` note.
 
 ---
 
@@ -86,8 +85,6 @@ depends_on::     [[Dependency Page]]
 segments::       [[Segment Page]]
 evidence::       [[Source or Report Page]]
 derived_from::   [[Source Page]]
-entity::         Named Concept Without Its Own Page
-claim::          "Key assertion for this inline claim"
 ```
 
 Flat wikilinks are acceptable in running prose for navigation; `## Links` / `## Связи` must use typed edges.

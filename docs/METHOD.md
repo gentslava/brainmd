@@ -41,13 +41,7 @@ The vocabulary is intentionally small so queries stay simple. These edge types p
 
 ## Dandelion Rule
 
-Each stable page (`03_Wiki`) carries exactly **one primary claim** in frontmatter:
-
-```yaml
-claim: "<the key takeaway in one sentence, with a number if there is one>"
-```
-
-This is the "dandelion head" — a tight summary that lets an LLM agent decide in one token whether the full page is relevant, without reading it. Supporting evidence hangs off the stem (the page body). Without a claim, the page is a blob; with it, the page is a queryable node.
+Ephemeral pages (Inbox, agent reports, raw sources) may link into stable wiki pages, but stable wiki pages must not link back to individual ephemeral items. Cross-reference goes through the registry/MOC level. This prevents N×K manual links from accumulating as the vault grows.
 
 ---
 
@@ -77,21 +71,6 @@ Lens patterns (see `canon/Knowledge Graph Queries.md`):
 
 ---
 
-## Claim / Entity Sub-Document Nodes
-
-Two sub-document constructs extend the graph without adding full pages:
-
-**claim::** (frontmatter) — the single-sentence summary that makes pages queryable at retrieval time.
-
-**entity::** (in `## Связи`) — a named concept that is important enough to reference but too small for its own page:
-
-```markdown
-entity:: segment-B-partners
-entity:: channel-X-suspended
-```
-
-Agents and Dataview queries can find these without the concept needing its own file.
-
 ---
 
 ## Lifecycle
@@ -100,9 +79,15 @@ Agents and Dataview queries can find these without the concept needing its own f
 Raw source
   → 02_Sources/Source Summaries/   (cleaned summary)
   → 02_Sources/Extracted Facts/Insight Inbox  (quick buffer)
-  → 03_Wiki/<domain>/              (compiled stable page, with claim + typed edges)
+  → 03_Wiki/<domain>/              (compiled stable page, with typed edges + provenance)
   → 04_MOC/<domain>                (registered in relevant MOC)
   → 05_Dashboards/                 (surfaced if signal is recurring)
 ```
 
-Agents run `brain gate` (ingest gate — validates frontmatter, claim, source) and `brain diagnose` (graph health — broken links, orphans, overloaded hubs) to keep the graph valid. See `scripts/` for tooling.
+Agents run `brain gate` (ingest gate — validates frontmatter, source, required fields) and `brain diagnose` (graph health — broken links, orphans, overloaded hubs) to keep the graph valid. See `scripts/` for tooling.
+
+---
+
+## Note on retired practices
+
+`claim::` frontmatter and `entity::` sub-document nodes were part of an earlier version of the method. Two isolated A/B experiments (90 solver-agents each, blind judge, fixed golden answers) showed they do not improve retrieval accuracy. Entity sub-pages in particular acted as attractors — pulling solvers away from the canonical fact page and cutting off broader search. Both practices were retired. Numbers must live in exactly one place: the metric or source page, with typed `derived_from::`/`evidence::` provenance edges.

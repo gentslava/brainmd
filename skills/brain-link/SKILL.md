@@ -1,6 +1,6 @@
 ---
 name: brain-link
-description: Grow connections from a new or recently updated page to existing knowledge. Set claim::, attach derived_from/evidence to every number. The edge-growing pass that makes the graph dense and navigable.
+description: Grow connections from a new or recently updated page to existing knowledge. Attach derived_from/evidence to every number. The edge-growing pass that makes the graph dense and navigable.
 ---
 
 # brain-link
@@ -23,18 +23,15 @@ description: Grow connections from a new or recently updated page to existing kn
 ### 1. Read the new or updated page
 
 Identify:
-- The page's `claim` (its core assertion)
-- Key entities, metrics, processes, products mentioned
+- Key topics, metrics, processes, products the page covers
 - Numbers that need provenance
 - Concepts that might exist elsewhere in the vault
 
 ### 2. Search the vault for connection candidates
 
 Search by:
-- Entity names mentioned on the page
-- Metric names mentioned
-- Process or product names
-- Domain terms in the claim
+- Metric, process, and product names mentioned on the page
+- Key domain terms from the page's title and opening section
 
 For each candidate, confirm it is a real vault page (not a broken link) before adding an edge.
 
@@ -52,8 +49,6 @@ Choose the correct edge type for each connection:
 | `segments::` | This page segments or classifies the target population |
 | `evidence::` | The target is a source/report supporting claims on this page |
 | `derived_from::` | Numbers on this page are computed from the target source |
-| `entity::` | A key named concept mentioned here without its own page |
-| `claim::` | An inline claim (sub-assertion with its own provenance note) |
 
 Do not use flat `[[wikilink]]` in `## Links`. Use typed edges only there.
 
@@ -67,27 +62,13 @@ For each key number on the page:
 
 No key number should appear without one of the above.
 
-### 5. Set or update `claim`
-
-Confirm the page's `claim:` in frontmatter accurately summarizes the page's key assertion. Include a number if the page is metric/finance-oriented.
-
-If the claim needs updating (because the page was revised), update it and note the change in the operation log.
-
-### 6. Update the `entity::` vocabulary
-
-If the page introduces a key named concept that does not have its own page and is referenced across multiple pages, add:
-```
-entity:: <Concept Name>
-```
-in the `## Links` section, and consider whether this concept warrants its own page.
-
-### 7. Check for reverse link opportunity (within limits)
+### 5. Check for reverse link opportunity (within limits)
 
 For 1–3 existing stable pages that strongly relate to the new page, check whether they should add an outgoing link to the new page. If yes, update their `## Links` section.
 
 **Do not** add the new page to every loosely related page. The dandelion rule: fewer strong links beat many weak ones.
 
-### 8. Run untangle (optional)
+### 6. Run untangle (optional)
 
 ```bash
 brain untangle manifest.txt

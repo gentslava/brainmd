@@ -68,11 +68,7 @@ For numbers specifically: attach `derived_from::` or `evidence::` to the source.
 
 Never promote a hypothesis to a fact without verification.
 
-### 5. Set a `claim` if writing to a stable wiki page
-
-Every stable wiki page carries exactly one `claim:` in frontmatter — the single most important assertion. If you are adding to an existing page, check whether the claim needs updating.
-
-### 6. Log the capture
+### 5. Log the capture
 
 Add a brief entry to the vault's operation log: what was captured, where it went, why it matters.
 

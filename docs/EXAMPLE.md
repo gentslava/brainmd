@@ -18,7 +18,6 @@ confidence: high
 source:
   - Product spec v3.2
   - Engineering ADR-17
-claim: "Checkout Flow is the primary revenue path — 78% of orders complete here."
 tags:
   - product
 ---
@@ -57,7 +56,6 @@ confidence: high
 source:
   - analytics DB (table: funnel_events, 2026-05)
   - Dashboard - Growth KPIs
-claim: "Checkout conversion is 34% step-1→order; step-3 drop-off is the primary bottleneck."
 data_source: PostgreSQL
 tags:
   - metric
@@ -107,7 +105,6 @@ source:
   - Metric - Checkout Conversion
   - Agent Report - UX Session Analysis 2026-05
   - Decision - Payment UX Redesign
-claim: "Step-3 drop-off is driven by card-form UX friction; fixing it is projected to recover +8 pp conversion."
 tags:
   - synthesis
 ---
@@ -142,8 +139,7 @@ affects:: [[Product - Checkout Flow]]
 
 Run before committing new pages. It checks:
 
-- All three pages have required frontmatter fields (`type`, `status`, `owner`, `updated`, `confidence`, `source`, `claim`).
-- `claim` is non-empty and fits in one sentence.
+- All three pages have required frontmatter fields (`type`, `status`, `owner`, `updated`, `confidence`, `source`).
 - `## Связи` section is present on each `03_Wiki` page.
 - No `confidence: high` without at least one named `source`.
 
@@ -158,4 +154,4 @@ Run periodically on the vault. It detects:
 - **Broken links** — `[[Agent Report - UX Session Analysis 2026-05]]` must exist in `06_Agents/Agent Reports/`; a missing file is a P0 error.
 - **Low-confidence without `to verify`** — Synthesis step-3 hypothesis is marked `(inferred)` and the page body says "not yet A/B confirmed", satisfying the discipline.
 
-The result: three pages, typed edges, one queryable claim each, traceable to sources — no hallucinations injected.
+The result: three pages, typed edges, every number traceable to a source — no hallucinations injected.

@@ -56,7 +56,7 @@ Collect all output. Classify findings by priority.
 
 ### 3. Check for drift
 
-Drift = a stable wiki page whose `claim` or facts contradict a more recent source.
+Drift = a stable wiki page whose facts contradict a more recent source.
 
 For each domain's key metrics pages:
 - Compare `updated` date to the most recent source in the Source Registry
@@ -138,7 +138,7 @@ Operation log entry: date, vault size, Gini, orphan count, P0/P1/P2 counts, synt
 
 | Command | What it checks |
 |---|---|
-| `brain gate <manifest>` | Gate: frontmatter completeness, claim presence, source presence |
+| `brain gate <manifest>` | Gate: frontmatter completeness, source presence, required fields |
 | `brain lint` | Edge types valid, up-links present, ephemeral not receiving stable links |
 | `brain diagnose` | Orphans, hubs, communities, Gini, topological surprising connections |
 | `brain untangle <manifest>` | Dandelion rule violations (ephemeral ↔ stable link direction) |

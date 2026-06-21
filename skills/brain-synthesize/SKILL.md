@@ -1,6 +1,6 @@
 ---
 name: brain-synthesize
-description: When a topic has enough evidence, compile a synthesis page — a management-level conclusion that rises above individual facts. Produces a synthesis page with claim, evidence table, and typed links.
+description: When a topic has enough evidence, compile a synthesis page — a management-level conclusion that rises above individual facts. Produces a synthesis page with an evidence table and typed links.
 ---
 
 # brain-synthesize
@@ -57,7 +57,6 @@ Use `canon/templates/synthesis.md`. Required:
 ```yaml
 type: synthesis
 status: draft
-claim: "<the single key conclusion, with number if applicable>"
 confidence: medium  # rarely high until peer-reviewed
 source:
   - <list each source wiki page or document>
@@ -108,8 +107,7 @@ Operation log entry: synthesis title, question answered, sources used, open ques
 
 ## Quality gate before marking active
 
-- [ ] Single clear `claim` in frontmatter
-- [ ] All claims labeled with knowledge level
+- [ ] All findings labeled with knowledge level
 - [ ] All numbers have provenance (inline or via `derived_from`/`evidence`)
 - [ ] Contradictions logged if any
 - [ ] Typed edges in `## Links`

@@ -43,11 +43,11 @@ Focus on:
 - Synthesis pages ↔ Source pages (synthesis uses data not yet attributed)
 - Hypothesis pages ↔ Evidence pages (evidence that confirms or refutes a hypothesis)
 
-### 3. Read candidates' `claim` fields
+### 3. Screen candidates by title and opening
 
-For each candidate pair, read their `claim:` fields. If the claims are semantically related (same metric, same phenomenon, same entity, same root cause), the pages should be linked.
+For each candidate pair, read their title and opening paragraph. If they are semantically related (same metric, same phenomenon, same root cause), the pages should be linked.
 
-Do not read the full page for initial screening — `claim` is sufficient for 80% of cases.
+Do not read the full page for initial screening — the title and first section are usually sufficient.
 
 ### 4. Evaluate each candidate
 

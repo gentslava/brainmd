@@ -4,7 +4,6 @@ status: draft
 owner: <owner>
 updated: YYYY-MM-DD
 confidence: medium
-claim: "<one sentence: what this source contains and its key finding>"
 source:
   - <file path, URL, database query, or document name>
 tags:
@@ -12,8 +11,6 @@ tags:
 ---
 
 # Source — <Source Title>
-
-> **Claim:** <restate the key finding of this source>
 
 ## Source metadata
 
@@ -39,12 +36,6 @@ tags:
 - **fact** — <statement> `[confidence: high]`
 - **fact** — <number or finding> `[confidence: medium]`
 - **to verify** — <uncertain claim that needs cross-checking>
-
-## Entities mentioned
-
-<!-- Named concepts, products, processes, people, organizations -->
-
-- `entity:: <Name>` — <brief description>
 
 ## Caveats and limitations
 
